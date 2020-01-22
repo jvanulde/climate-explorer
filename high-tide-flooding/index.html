@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang='en' class="width-100 height-100">
+<head>
+  <title>Climate Explorer</title>
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="https://toolkit.climate.gov/sites/default/files/favicon_2.ico" type="image/vnd.microsoft.icon">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" media="screen" href="/resources/css/screen.css">
+  <link rel="stylesheet" media="screen" href="/resources/css/nouislider.min.css">
+  
+  
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" integrity="sha256-AAhU14J4Gv8bFupUUcHaPQfvrdNauRHMt+S4UVcaJb0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js" integrity="sha256-N4u5BjTLNwmGul6RgLoESPNqDFVUibVuOYhP4gJgrew=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js" integrity="sha256-8E6QUcFg1KTnpEU8TFGhpTGHw5fJqB9vCms3OhAYLqw=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4.2.4/dist/es6-promise.auto.min.js" integrity="sha384-tQnfZyyk7ZX5leaWDkq9qAvwSkSvH0ouVfrxLn12X9Y2DS8nDa8pHXFH9LLKJdo/" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript" src="/resources/js/ce.js"></script>
+  <script type="text/javascript" src="/resources/js/spinner.js"></script>
+  
+  <script>
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = window.location.hostname === 'climate.toolkit.gov' ?
+      "https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&client=gme-noaa&channel=OAR.CLIMATE_GOV_CLIMATE_EXPLORER2" :
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyBSjujKAutsVyR0GcsfXJvGA-J-54zWT2U&libraries=places";
+    document.head.appendChild(s);
+  </script>
+  <meta property="fb:app_id" content="187816851587993">
+  <meta property="og:url" content="high-tide-flooding">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Location data for Buncombe County, NC">
+  <meta property="og:description" content="The Climate Explorer allows you to view historical and projected climate variables and assess the impacts of climate change on the things you care about">
+  <meta property="og:image" content="/resources/img/og.jpg">
+</head>
+
+<body class="width-100 height-100">
+
+  <!-- BEGIN HEADER TEMPLATE -->
+  
+  <header id="secondary-header" class="flex-container  padding-default-half width-100 ">
+      <span id="secondary-nav" class="topnav d-flex width-100" >
+          <a href="https://toolkit.climate.gov" class="secondary-logo padding-horrizontal d-flex-left" title="U.S. Climate Resilience Toolkit">
+            <picture>
+              <source media="(max-width: 599px)" srcset="/resources/img/crt-logo-mobile.png">
+              <source media="(min-width: 600px)" srcset="/resources/img/crt-logo.png">
+              <img src="/resources/img/crt-logo.png" alt="U.S. Climate Resilience Toolkit">
+            </picture>
+          </a>
+  
+          <div class="secondary-font-title float-left d-flex-nowrap padding-horrizontal">
+            Climate Explorer
+          </div>
+  
+          <div id="share-widget-wrapper" class="padding-horrizontal default-btn-height top-select-wrapper-minor d-flex-center">
+            <div class="share-widget">
+              <a href="#" class="share-trigger">
+                <span class="fa fa-share-alt share-icon"></span>
+                <span class="a-share-label"></span>
+                <!-- Share -->
+              </a>
+              <ul >
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcrt-climate-explorer.nemac.org%2Fstations%2F%3Fid%3Dhigh_tide_flooding%26extent%3D-86.27%252C-71.21%252C32.47%252C38.43%26zoom%3D7%26station-mhhw%3D0.54" id="share_facebook" class="share-link share-facebook" target="_blank">
+                  <span class="icon icon-facebook share-icon"></span>
+                  <span class="a-share-label">Facebook</span>
+                </a>
+              </li>
+                <li><a href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fcrt-climate-explorer.nemac.org%2Fstations%2F%3Fid%3Dhigh_tide_flooding%26extent%3D-86.27%252C-71.21%252C32.47%252C38.43%26zoom%3D7%26station-mhhw%3D0.54" id="share_twitter" class="share-link share-twitter" target="_blank">
+                  <span class="icon icon-twitter"></span><span class="a-share-label">Twitter</span></a></li>
+                <li id="share-permalink"><a href="#" class="share-link share-permalink">
+                  <span class="icon icon-link"></span><span class="a-share-label">Copy Permalink</span></a></li>
+              </ul>
+  
+              <div id="share-permalink-input">
+                <input type="text" id="share_link" value="">
+              </div>
+            </div>
+          </div>
+  
+      </span>
+  
+  </header>
+  
+  
+  <!-- END HEADER TEMPLATE -->
+
+  <div id="high-tide-flooding-viewport" class="padding-horrizontal d-flex d-flex-column">
+
+    <div id="search-row" class="padding-horizontal d-flex-row flex-justify padding-top padding-bottom-half d-flex-justify" >
+
+      <div class="rounded-box-secondary input-outer padding-horrizontal bottom-padding default-btn-height search-box-secondary width-40">
+        <input id="cards-search-input" type="text" class="location-mapper input-inner-default border-none default-btn-height width-90" autocomplete="off" placeholder="Enter county, city, or zip code">
+        <span class="icon icon-search search-default float-right padding-default"></span>
+      </div>
+
+      <div id="stations-select-wrapper" class="rounded-choice-box padding-horrizontal default-btn-height top-select-wrapper d-flex-center">
+        <div class="select stations-select">
+          <div id="stations-select-vis" class="select-styled" rel="station-1">Stations</div>
+          <ul class="select-options">
+            <li rel="station-1" class="default-select-option">Stations 1</li>
+            <li rel="station-2" class="default-select-option">Stations 2</li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div id="downloads-select-wrapper" class="rounded-choice-box padding-horrizontal default-btn-height top-select-wrapper d-flex-center">
+
+        <div class="select download-select">
+          <div id="downnloads-select-vis" class="select-styled disabled" rel="none" href="javascript:void(0);">
+            <i class="fas fa-download select-icon"></i>
+            <a rel="none" href="javascript:void(0);" >Downloads</a>
+          </div>
+          <ul class="select-options" style="display: none;">
+            <li icon="fas fa-download select-icon"  class="default-select-option">
+              <a rel="none" href="javascript:void(0);" >Downloads</a>
+            </li>
+            <div icon="fas fa-water select-icon" class="default-select-option-group">
+              <i class="fas fa-water select-icon"></i>Tidal Flooding
+            </div>
+            <li rel="download-tidal-image" icon="fas fa-download select-icon" href="javascript:void(0);" class="default-select-option">
+              <a rel="download-tidal-image" href="javascript:void(0);" >Download tidal flooding image</a>
+            </li>
+            <li rel="download-tidal-data" icon="fas fa-download select-icon" href="javascript:void(0);" class="default-select-option">
+              <a rel="download-tidal-data" href="https://tidesandcurrents.noaa.gov/publications/techrpt86_PaP_of_HTFlooding.csv" >Download tidal flooding data</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="info-row" class="padding-vertical width-100" >
+      <div class="rounded-filters-box padding-default width-100">
+
+        <div class="d-flex-row">
+
+          <div id="info-text-wrapper" class="width-90">
+            <i class="fas fa-water icon-info-box"></i>
+            <!-- <span id="default-city-state" class="text-info-box" ></span>
+            <span id="" class="text-info-box" > in </span>
+            <span id="default-city-county" class="text-info-box"></span> -->
+            <span id="station-info-none" class="padding-horizontal">Select a Station</span>
+            <span id="station-info" class="padding-horizontal d-none">
+              <span id="default-station-label" class="text-info-box label" >Station id: </span>
+              <span id="default-station" class="text-info-box data right-padding" ></span>
+              <span id="default-station-id-label" class="text-info-box label" >Station: </span>
+              <span id="default-station-id" class="text-info-box data right-padding" ></span>
+              <span id="default-stationMOverMHHW-label" class="text-info-box label" >Local threshold: </span>
+              <span id="default-stationMOverMHHW" class="text-info-box data right-padding" ></span>
+            </span>
+          </div>
+
+
+          <div id="filters-toggle" class="width-10">
+            <div class="select filters-toggle-select">
+              <div id="filters-toggle-select-vis" class="select-styled" rel="filter"></div>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div id="filters-row" class="d-flex-row flex-justify padding-top padding-bottom d-flex-left" >
+
+          <a id="high-tide-secretlink-forcharts" href="../high-tide-flooding" class="d-none"></a>
+          <a id="chartmap-btn-chart-link"  href="../high-tide-flooding" class="d-none"></a>
+          <a id="chartmap-btn-map-link"  href="../high-tide-flooding" class="d-none">Map</a>
+          <div id="chartmap-wrapper" class="padding-horrizontal-half padding-vertical-half default-btn-height d-flex-center width-20 disabled">
+            <div id="btn-chart" class="btn-chart btn-default circle-box-left d-flex-center width-50" val="chart" nav="high-tide-flooding" link="chartmap-btn-chart-link" sel="chartmap-select-vis">
+              Chart
+            </div>
+            <div id="btn-chart" class="btn-map btn-default-selected circle-box-right d-flex-center width-50"  nav="high-tide-flooding"  val="map" link="chartmap-btn-map-link" sel="chartmap-select-vis">
+              Map
+            </div>
+          </div>
+
+          <div id="chartmap-select-wrapper" class="rounded-choice-box padding-horrizontal-half padding-vertical-half default-btn-height d-flex-center width-20">
+            <div class="select chartmap-select">
+              <div id="chartmap-select-vis" class="select-styled" rel="chart">Map</div>
+              <ul class="select-options">
+                <li id="chartmap-select-chart-link" rel="chart" class="default-select-option" nav="high-tide-flooding" link="chartmap-btn-chart-link" >Chart</li>
+                <li id="chartmap-select-map-link" rel="map" class="default-select-option" nav="high-tide-flooding" link="chartmap-btn-map-link">Map</li>
+              </ul>
+            </div>
+          </div>
+
+          <div id="tidalzoom-wrapper" class="padding-horrizontal-half padding-vertical-half default-btn-height d-flex-center width-30">
+            <div id="btn-tidalzoom" class="btn-tidalzoom btn-default circle-box-secondary d-flex-center width-90 btn-default-disabled" val="Historical" >
+              Historical
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div id="stations-map-row" class="padding-top-half width-100 height-100 d-flex" >
+      <div id="stations-map-wrap" class="map-wrap width-100 height-100 ">
+        <div id="stations-map" class="map-element"></div>
+        <div id="stations-map-message" class="map-nostations-message d-none"></div>
+      </div>
+    </div>
+
+    <div id="stations-graph-row" class="padding-vertical width-100 height-100" >
+      <div id="stations-graph-wrap" class="width-100 height-100 d-flex-row">
+        <div id="tidal-chart" class="tidal-chart d-flex-center width-100"></div>
+      </div>
+    </div>
+
+    <div id="station-info-row" class="d-flex-row flex-justify padding-horrizontal padding-bottom d-flex-left d-none" >
+      <span class="padding-bottom-half" >Click 'Historical' button to zoom in on or out from the observational period.
+        Place your cursor over the curves on this graph for details. Gray bars from 1950 to 2016 show observed annual
+        counts of high-tide flooding. Red and blue curves show the average number of high-tide flooding events projected
+        for future years under two scenarios. Data from
+        <a target="_blank" href="https://tidesandcurrents.noaa.gov/publications/techrpt86_PaP_of_HTFlooding.pdf">
+          NOAA Technical Report NOS CO-OPS 086 - Patterns and Projections of High-tide Flooding</a>.
+        </span>
+      </div>
+
+
+    </div>
+    <!-- </div> -->
+
+    <!-- BEGIN NAV FOOOTER TEMPLATE -->
+    
+    <div id="nav-footer" class="d-flex-row padding-horrizontal padding-bottom d-flex d-flex-center width-100">
+      <div class="flex-container-nowrap flex-justify padding-horrizontal width-100">
+    
+        <!-- home  -->
+        <div class="d-flex-row nav-footer-row-1">
+          <div class="padding-horrizontal d-flex-column">
+            <div class="d-flex-center d-flex-row padding-horrizontal nav-footer-area-title" >
+            </div>
+    
+            <a id="home-secretlink-nav-footer" href="../cards-home" class="d-none"></a>
+            <div id="home-nav-footer" class="padding-horrizontal d-flex-bottom d-flex-row nav-footer-item">
+              <div class="d-flex d-flex-bottom d-flex-column">
+                <div class="nav-footer-icon">
+                  <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-footer-label">
+                  Home
+                </div>
+                <div class="nav-footer-label-smallscreen">
+                  Home
+                </div>
+                <div class="nav-footer-label-verysmallscreen">
+                  Home
+                </div>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+    
+        <!-- county based  -->
+        <div class="d-flex-row nav-footer-row-2">
+          <div class="padding-horrizontal d-flex-fill d-flex-column">
+            <div class="d-flex-center d-flex-row d-flex-fill padding-horrizontal nav-footer-area-title" >
+              <span class="nav-footer-area-line"></span>
+              <span class="nav-footer-area-text">Region Based</span>
+              <span class="nav-footer-area-text-smallecreen">Region</span>
+              <span class="nav-footer-area-line"></span>
+            </div>
+            <div class="padding-horrizontal d-flex-fill d-flex-row nav-footer-items">
+    
+              <a id="national-climate-maps-secretlink-nav-footer" href="../national-climate-maps" class="d-none"></a>
+              <div id="national-climate-maps-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+                <div class="nav-footer-icon">
+                  <span class="stateface stateface-us"></span>
+                </div>
+                <div class="nav-footer-label">
+                  National Climate Maps
+                </div>
+                <div class="nav-footer-label-smallscreen">
+                  National Maps
+                </div>
+                <div class="nav-footer-label-verysmallscreen">
+                  Maps
+                </div>
+              </div>
+    
+              <a id="local-climate-charts-secretlink-nav-footer" href="../local-climate-charts" class="d-none"></a>
+              <div id="local-climate-charts-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+                <div class="nav-footer-icon">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="nav-footer-label">
+                  Local Climate Charts
+                </div>
+                <div class="nav-footer-label-smallscreen">
+                  Local Charts
+                </div>
+                <div class="nav-footer-label-verysmallscreen">
+                  Charts
+                </div>
+              </div>
+    
+              <a id="local-climate-maps-secretlink-nav-footer" href="../local-climate-maps" class="d-none"></a>
+              <div id="local-climate-maps-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+                <div class="nav-footer-icon">
+                  <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="nav-footer-label">
+                  Local Climate Maps
+                </div>
+                <div class="nav-footer-label-smallscreen">
+                  Local Maps
+                </div>
+                <div class="nav-footer-label-verysmallscreen">
+                  Maps
+                </div>
+              </div>
+            </div>
+          </div>
+    
+    
+    
+    
+          <!-- Station based  -->
+          <div id="sation-based" class="padding-horrizontal d-flex-fill d-flex-column">
+            <div class="d-flex-center d-flex-row d-flex-fill padding-horrizontal nav-footer-area-title" >
+              <span class="nav-footer-area-line"></span>
+              <span class="nav-footer-area-text">Station Based</span>
+              <span class="nav-footer-area-text-smallecreen">Station</span>
+              <span class="nav-footer-area-line"></span>
+            </div>
+    
+            <div id="more-wrapper-nav-footer" class="padding-horrizontal d-flex-row nav-footer-items">
+              <a id="more-secretlink-nav-footer" href="../local-climate-charts" class="d-none"></a>
+              <div id="more-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+                <div class="nav-footer-icon">
+                  <i class="fas fa-ellipsis-h"></i>
+                </div>
+                <div class="nav-footer-label">
+                  More
+                </div>
+                <div class="nav-footer-label-smallscreen">
+                  More
+                </div>
+                <div class="nav-footer-label-verysmallscreen">
+                  More
+                </div>
+              </div>
+            </div>
+    
+            <div id="expanded-wrapper-nav-footer" class="padding-horrizontal d-flex-row nav-footer-items">
+    
+              <a id="historical-weather-data-secretlink-nav-footer" href="../historical-weather-data" class="d-none"></a>
+              <div id="historical-weather-data-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+                <div class="nav-footer-icon">
+                  <i class="fas fa-chart-area"></i>
+                </div>
+                <div class="nav-footer-label">
+                  Historical Weather Data
+                </div>
+                <div class="nav-footer-label-smallscreen">
+                  Historical Data
+                </div>
+                <div class="nav-footer-label-verysmallscreen">
+                  Data
+                </div>
+              </div>
+    
+              <a id="historical-thresholds-secretlink-nav-footer" href="../historical-thresholds" class="d-none"></a>
+              <div id="historical-thresholds-nav-footer" class="d-flex d-flex-center d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+                <div class="nav-footer-icon">
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-footer-label">
+                  Historical Thresholds
+                </div>
+                <div class="nav-footer-label-smallscreen">
+                  Historical Thresholds
+                </div>
+                <div class="nav-footer-label-verysmallscreen">
+                  Thresholds
+                </div>
+              </div>
+    
+              <a id="hightide-flooding-secretlink-nav-footer" href="../high-tide-flooding" class="d-none"></a>
+              <div id="hightide-flooding-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+                <div class="nav-footer-icon">
+                  <i class="fas fa-water"></i>
+                </div>
+                <div class="nav-footer-label">
+                  High-tide Flooding
+                </div>
+                <div class="nav-footer-label-smallscreen">
+                  High-tide
+                </div>
+                <div class="nav-footer-label-verysmallscreen">
+                  Tide
+                </div>
+              </div>
+              </div>
+            </div>
+    
+          </div>
+    
+          <!-- less  -->
+          <div id="less-row-1" class="d-flex-row nav-footer-row-1">
+            <div class="padding-horrizontal d-flex-column">
+              <div class="d-flex-center d-flex-row padding-horrizontal nav-footer-area-title" >
+              </div>
+    
+              <a id="less-secretlink-nav-footer" href="../cards-home" class="d-none"></a>
+              <div id="less-wrapper-nav-footer" class="padding-horrizontal d-flex-bottom d-flex-row nav-footer-item">
+                <div class="d-flex d-flex-bottom d-flex-column">
+                  <div class="nav-footer-icon">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </div>
+                  <div class="nav-footer-label">
+                    Less
+                  </div>
+                  <div class="nav-footer-label-smallscreen">
+                    Less
+                  </div>
+                  <div class="nav-footer-label-verysmallscreen">
+                    Less
+                  </div>
+                </div>
+              </div>
+    
+            </div>
+          </div>
+    
+        </div>
+    
+    
+      </div>
+    </div>
+    
+    <script type="text/javascript" src="/resources/js/nav_footer.js"></script>
+    
+    <!-- END NAV FOOOTER TEMPLATE -->
+    <div id="desktop-warning">
+      <p>The Climate Explorer is optimized for desktop use. Please visit the site on a desktop computer.</p>
+    </div>
+    
+    <!-- START candidates for minification -->
+    <script type="text/javascript" src="/resources/vendor/lodash.js"></script>
+    <script type="text/javascript" src="/resources/vendor/formstone/core.js"></script>
+    <script type="text/javascript" src="/resources/vendor/formstone/mediaquery.js"></script>
+    <script type="text/javascript" src="/resources/vendor/formstone/touch.js"></script>
+    <script type="text/javascript" src="/resources/vendor/formstone/scrollbar.js"></script>
+    <script type="text/javascript" src="/resources/vendor/formstone/dropdown.js"></script>
+    <script type="text/javascript" src="/resources/vendor/formstone/equalize.js"></script>
+    <script type="text/javascript" src="/resources/vendor/formstone/swap.js"></script>
+    <script type="text/javascript" src="/resources/vendor/lc_switch.min.js"></script>
+    <script type="text/javascript" src="/resources/vendor/jquery.cycle2.min.js"></script>
+    <script type="text/javascript" src="/resources/vendor/jquery.waypoints.min.js"></script>
+    <script type="text/javascript" src="/resources/vendor/jquery.waypoints.sticky.min.js"></script>
+    <script type="text/javascript" src="/resources/vendor/split-pane.min.js"></script>
+    <script type="text/javascript" src="/resources/vendor/download.js"></script>
+    <script type="text/javascript" src="/resources/vendor/jquery.hoverintent.min.js"></script>
+    <script type="text/javascript" src="/resources/vendor/sweetalert.min.js"></script>
+    <script type="text/javascript" src="/resources/vendor/tether.js"></script>
+    <script type="text/javascript" src="/resources/vendor/shepherd.min.js"></script>
+    <script type="text/javascript" src="/resources/vendor/formmapper.js"></script>
+    <!-- END candidates for minification -->
+    
+    <script type="text/javascript" src="/resources/vendor/climate-widget-graph/climate-widget-graph.js"></script>
+    
+    <script type="text/javascript" src="/resources/js/main.js"></script>
+    
+    <script type="text/javascript" src="/resources/js/global_functions.js"></script>
+    <script type="text/javascript" src="/resources/vendor/tidal/tidalstationswidget.js"></script>
+    
+    
+    <script>
+      $(document).ready(function () {
+        window.app = new App('/resources/data/');
+      });
+    </script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119744751-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', "UA-119744751-1");
+    </script>
+    
+
+    <script src="https://unpkg.com/@esri/arcgis-to-geojson-utils"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.min.js" integrity="sha256-Nhtik+K3xORhs5S9o0qlol4eRNB9O5OyTOJqbLucPk8=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/resources/js/stationsMap.js"></script>
+    <script type="text/javascript" src="/resources/js/stationAnnualGraph.js"></script>
+    <script type="text/javascript" src="/resources/vendor/tidal/tidalstationswidget.js"></script>
+    <script src="https://unpkg.com/terraformer@1.0.8/terraformer.js" integrity="sha384-+M797Pj3WZVCwMmLbOxAoaWYcKJo8NSxItmI48ytcLNeAnfn1d/IckFn31jEqrzP"
+    crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/terraformer-arcgis-parser@1.0.5/terraformer-arcgis-parser.js"
+    integrity="sha384-duFUjKTSNoxEspdJNwr83CUgRxclf0ueKJB9DU/Vbit6bfWgzvZsHW6H1JLBBXhp" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/resources/js/ce3-ui-components.js"></script>
+    <script type="text/javascript" src="/resources/js/high-tide-flooding.js"></script>
+    <script type="text/javascript" src="/resources/js/nouislider.min.js"></script>
+  </body>
+  </html>
