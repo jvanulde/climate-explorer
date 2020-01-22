@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang='en' class="width-100 height-100">
+<head>
+  <title>Climate Explorer</title>
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="https://toolkit.climate.gov/sites/default/files/favicon_2.ico" type="image/vnd.microsoft.icon">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" media="screen" href="/resources/css/screen.css">
+  <link rel="stylesheet" media="screen" href="/resources/css/nouislider.min.css">
+  
+  
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" integrity="sha256-AAhU14J4Gv8bFupUUcHaPQfvrdNauRHMt+S4UVcaJb0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js" integrity="sha256-N4u5BjTLNwmGul6RgLoESPNqDFVUibVuOYhP4gJgrew=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js" integrity="sha256-8E6QUcFg1KTnpEU8TFGhpTGHw5fJqB9vCms3OhAYLqw=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4.2.4/dist/es6-promise.auto.min.js" integrity="sha384-tQnfZyyk7ZX5leaWDkq9qAvwSkSvH0ouVfrxLn12X9Y2DS8nDa8pHXFH9LLKJdo/" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript" src="/resources/js/ce.js"></script>
+  <script type="text/javascript" src="/resources/js/spinner.js"></script>
+  
+  <script>
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = window.location.hostname === 'climate.toolkit.gov' ?
+      "https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places&client=gme-noaa&channel=OAR.CLIMATE_GOV_CLIMATE_EXPLORER2" :
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyBSjujKAutsVyR0GcsfXJvGA-J-54zWT2U&libraries=places";
+    document.head.appendChild(s);
+  </script>
+  <meta property="fb:app_id" content="187816851587993">
+  <meta property="og:url" content="/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Location data for Buncombe County, NC">
+  <meta property="og:description" content="The Climate Explorer allows you to view historical and projected climate variables and assess the impacts of climate change on the things you care about">
+  <meta property="og:image" content="/resources/img/og.jpg">
+</head>
+
+<body class="width-100 height-100">
+
+  <!-- BEGIN HEADER TEMPLATE -->
+  
+  <header id="secondary-header" class="flex-container  padding-default-half width-100 ">
+      <span id="secondary-nav" class="topnav d-flex width-100" >
+          <a href="https://toolkit.climate.gov" class="secondary-logo padding-horrizontal d-flex-left" title="U.S. Climate Resilience Toolkit">
+            <picture>
+              <source media="(max-width: 599px)" srcset="/resources/img/crt-logo-mobile.png">
+              <source media="(min-width: 600px)" srcset="/resources/img/crt-logo.png">
+              <img src="/resources/img/crt-logo.png" alt="U.S. Climate Resilience Toolkit">
+            </picture>
+          </a>
+  
+          <div class="secondary-font-title float-left d-flex-nowrap padding-horrizontal">
+            Climate Explorer
+          </div>
+  
+          <div id="share-widget-wrapper" class="padding-horrizontal default-btn-height top-select-wrapper-minor d-flex-center">
+            <div class="share-widget">
+              <a href="#" class="share-trigger">
+                <span class="fa fa-share-alt share-icon"></span>
+                <span class="a-share-label"></span>
+                <!-- Share -->
+              </a>
+              <ul >
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcrt-climate-explorer.nemac.org%2Fstations%2F%3Fid%3Dhigh_tide_flooding%26extent%3D-86.27%252C-71.21%252C32.47%252C38.43%26zoom%3D7%26station-mhhw%3D0.54" id="share_facebook" class="share-link share-facebook" target="_blank">
+                  <span class="icon icon-facebook share-icon"></span>
+                  <span class="a-share-label">Facebook</span>
+                </a>
+              </li>
+                <li><a href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fcrt-climate-explorer.nemac.org%2Fstations%2F%3Fid%3Dhigh_tide_flooding%26extent%3D-86.27%252C-71.21%252C32.47%252C38.43%26zoom%3D7%26station-mhhw%3D0.54" id="share_twitter" class="share-link share-twitter" target="_blank">
+                  <span class="icon icon-twitter"></span><span class="a-share-label">Twitter</span></a></li>
+                <li id="share-permalink"><a href="#" class="share-link share-permalink">
+                  <span class="icon icon-link"></span><span class="a-share-label">Copy Permalink</span></a></li>
+              </ul>
+  
+              <div id="share-permalink-input">
+                <input type="text" id="share_link" value="">
+              </div>
+            </div>
+          </div>
+  
+      </span>
+  
+  </header>
+  
+  
+  <!-- END HEADER TEMPLATE -->
+
+  <!-- <div id="main-content-wrap">
+
+    <div class="share-widget">
+      <a href="#" class="share-trigger"><span class="icon icon-social"></span>Share</a>
+      <ul>
+        <li><a href="" id="share_facebook" class="share-link share-facebook" target="_blank"><span class="icon icon-facebook"></span>Facebook</a></li>
+        <li><a href="" id="share_twitter" class="share-link share-twitter" target="_blank"><span class="icon icon-twitter"></span>Twitter</a></li>
+        <li id="share-permalink"><a href="#" class="share-link share-permalink"><span class="icon icon-link"></span>Copy Permalink</a></li>
+      </ul>
+      
+      <div id="share-permalink-input">
+        <input type="text" id="share_link" value="">
+      </div>
+    </div>
+
+    <div id="location-search">
+      <input type="text" class="autocomplete location-mapper" autocomplete="off" placeholder="Search another City, County or Zip code">
+    </div>
+
+  </div> -->
+<div id="cards-viewport" class="padding-horrizontal d-flex d-flex-column">
+
+
+  <div id="search-row" class="padding-horizontal d-flex-row flex-justify padding-top padding-bottom-half d-flex-justify" >
+      <div class="rounded-box-secondary input-outer padding-horrizontal bottom-padding default-btn-height width-100">
+        <input id="cards-search-input" type="text" class="location-mapper input-inner-default border-none default-btn-height width-90" autocomplete="off" placeholder="Enter county, city, or zip code">
+        <span class="icon icon-search search-default float-right padding-default"></span>
+    </div>
+  </div>
+
+  <div id="info-row" class="padding-vertical width-100" >
+    <div class="rounded-info-box padding-default width-100">
+      <i class="fas fa-home icon-info-box"></i>
+      <span id="" class="text-info-box" >Select one of the following for </span>
+      <span id="default-city-state" class="text-info-box" ></span>
+      <span id="" class="text-info-box" > in </span>
+      <span id="default-city-county" class="text-info-box"></span>
+      <span id="default-chart-map-varriable" class="text-info-box" rel="tmax">Avg Daily Max Temp (°F)</span>
+    </div>
+  </div>
+
+  <div id="card-row" class="padding-horizontal padding-top-half padding-bottom-half d-flex-row flex-justify" >
+
+    <a id="card-national-maps-secretlink" href="../national-climate-maps" class="d-none"></a>
+    <div id="data-card" class="card-national-maps d-flex d-flex-column" >
+       <div id="card-image-row" class="d-flex-row d-flex-fill width-100">
+          <img class="card-image" src="../resources/img/card-nat-maps.png" />
+       </div>
+       <div id="card-text" class="card-text d-flex-row width-100">
+         <div id="card-title-icon" class="d-flex-row width-100">
+           <div class="card-title" >
+             National Climate Maps
+           </div>
+           <span class="card-icon stateface stateface-us"></span>
+         </div>
+         <div id="card-description" class="d-flex-column width-100">
+           Maps show observed and modeled data for the United States.
+         </div>
+       </div>
+    </div>
+
+
+    <a id="card-local-charts-secretlink" href="../local-climate-charts" class="d-none"></a>
+    <div id="data-card" class="card-local-charts d-flex d-flex-column">
+      <div id="card-image-row" class="d-flex-row d-flex-fill width-100">
+        <img class="card-image" src="../resources/img/card-local-charts.png" />
+       </div>
+       <div id="card-text" class="card-text d-flex-row width-100">
+         <div id="card-title-icon" class="d-flex-row width-100">
+           <div class="card-title" >
+             Local Climate Charts
+           </div>
+           <i class="card-icon fas fa-chart-line"></i>
+         </div>
+         <div id="card-description" class="d-flex-column width-100">
+           Graphs show observed and modeled data for the county of your selected location.
+         </div>
+       </div>
+    </div>
+
+    <a id="card-local-maps-secretlink" href="../local-climate-maps" class="d-none"></a>
+    <div id="data-card" class="card-local-maps d-flex d-flex-column" >
+      <div id="card-image-row" class="d-flex-row d-flex-fill width-100">
+         <img class="card-image" src="../resources/img/card-local-maps.png" />
+       </div>
+       <div id="card-text" class="card-text d-flex-row width-100">
+         <div id="card-title-icon" class="d-flex-row width-100">
+           <div class="card-title" >
+             Local Climate Maps
+           </div>
+           <i class="card-icon fas fa-map-marked-alt"></i>
+         </div>
+         <div id="card-description" class="d-flex-column width-100">
+           Maps show observed and modeled data for the county of your selected location.
+         </div>
+       </div>
+    </div>
+
+  </div>
+
+  <div id="card-row" class="padding-horizontal padding-top-half padding-bottom-half d-flex-row flex-justify" >
+
+    <a id="card-historical-weather-data-secretlink" href="../historical-weather-data" class="d-none"></a>
+    <div id="data-card" class="card-historical-weather-data d-flex d-flex-column" >
+      <div id="card-image-row" class="d-flex-row d-flex-fill width-100">
+         <img class="card-image" src="../resources/img/card-hist-daily.png" />
+       </div>
+       <div id="card-text" class="card-text d-flex-row width-100">
+         <div id="card-title-icon" class="d-flex-row width-100">
+           <div class="card-title" >
+             Historical Weather Data
+           </div>
+           <i class="card-icon fas fa-chart-area"></i>
+         </div>
+         <div id="card-description" class="d-flex-column width-100">
+           Graphs for individual observing stations let you compare daily temperatures and precipitation totals to long-term averages.
+         </div>
+       </div>
+    </div>
+
+    <a id="card-historical-thresholds-secretlink" href="../historical-thresholds" class="d-none"></a>
+    <div id="data-card" class="card-historical-thresholds d-flex d-flex-column" >
+      <div id="card-image-row" class="d-flex-row d-flex-fill width-100">
+        <img class="card-image" src="../resources/img/card-hist-thresholds.png" />
+       </div>
+       <div id="card-text" class="card-text d-flex-row width-100">
+         <div id="card-title-icon" class="d-flex-row width-100">
+           <div class="card-title" >
+             Historical Thresholds
+           </div>
+           <i class="card-icon fas fa-chart-bar"></i>
+         </div>
+         <div id="card-description" class="d-flex-column width-100">
+           Set the threshold for temperature or precipitation, to see how often that value has been exceeded per year.
+         </div>
+       </div>
+    </div>
+
+
+    <a id="card-hightide-flooding-secretlink" href="../high-tide-flooding" class="d-none"></a>
+    <div id="data-card" class="card-hightide-flooding d-flex d-flex-column" >
+      <div id="card-image-row" class="d-flex-row d-flex-fill width-100">
+         <img class="card-image" src="../resources/img/card-tidal-data.png" />
+       </div>
+       <div id="card-text" class="card-text d-flex-row width-100">
+         <div id="card-title-icon" class="d-flex-row width-100">
+           <div class="card-title" >
+            High-tide Flooding
+           </div>
+           <i class="card-icon fas fa-water"></i>
+         </div>
+         <div id="card-description" class="d-flex-column width-100">
+           Height above the long-term average of the daily highest water level, also known as mean higher high water (MHHW).
+         </div>
+       </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEGIN NAV FOOOTER TEMPLATE -->
+
+<div id="nav-footer" class="d-flex-row padding-horrizontal padding-bottom d-flex d-flex-center width-100">
+  <div class="flex-container-nowrap flex-justify padding-horrizontal width-100">
+
+    <!-- home  -->
+    <div class="d-flex-row nav-footer-row-1">
+      <div class="padding-horrizontal d-flex-column">
+        <div class="d-flex-center d-flex-row padding-horrizontal nav-footer-area-title" >
+        </div>
+
+        <a id="home-secretlink-nav-footer" href="../cards-home" class="d-none"></a>
+        <div id="home-nav-footer" class="padding-horrizontal d-flex-bottom d-flex-row nav-footer-item">
+          <div class="d-flex d-flex-bottom d-flex-column">
+            <div class="nav-footer-icon">
+              <i class="fas fa-home"></i>
+            </div>
+            <div class="nav-footer-label">
+              Home
+            </div>
+            <div class="nav-footer-label-smallscreen">
+              Home
+            </div>
+            <div class="nav-footer-label-verysmallscreen">
+              Home
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- county based  -->
+    <div class="d-flex-row nav-footer-row-2">
+      <div class="padding-horrizontal d-flex-fill d-flex-column">
+        <div class="d-flex-center d-flex-row d-flex-fill padding-horrizontal nav-footer-area-title" >
+          <span class="nav-footer-area-line"></span>
+          <span class="nav-footer-area-text">Region Based</span>
+          <span class="nav-footer-area-text-smallecreen">Region</span>
+          <span class="nav-footer-area-line"></span>
+        </div>
+        <div class="padding-horrizontal d-flex-fill d-flex-row nav-footer-items">
+
+          <a id="national-climate-maps-secretlink-nav-footer" href="../national-climate-maps" class="d-none"></a>
+          <div id="national-climate-maps-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+            <div class="nav-footer-icon">
+              <span class="stateface stateface-us"></span>
+            </div>
+            <div class="nav-footer-label">
+              National Climate Maps
+            </div>
+            <div class="nav-footer-label-smallscreen">
+              National Maps
+            </div>
+            <div class="nav-footer-label-verysmallscreen">
+              Maps
+            </div>
+          </div>
+
+          <a id="local-climate-charts-secretlink-nav-footer" href="../local-climate-charts" class="d-none"></a>
+          <div id="local-climate-charts-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+            <div class="nav-footer-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="nav-footer-label">
+              Local Climate Charts
+            </div>
+            <div class="nav-footer-label-smallscreen">
+              Local Charts
+            </div>
+            <div class="nav-footer-label-verysmallscreen">
+              Charts
+            </div>
+          </div>
+
+          <a id="local-climate-maps-secretlink-nav-footer" href="../local-climate-maps" class="d-none"></a>
+          <div id="local-climate-maps-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+            <div class="nav-footer-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <div class="nav-footer-label">
+              Local Climate Maps
+            </div>
+            <div class="nav-footer-label-smallscreen">
+              Local Maps
+            </div>
+            <div class="nav-footer-label-verysmallscreen">
+              Maps
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <!-- Station based  -->
+      <div id="sation-based" class="padding-horrizontal d-flex-fill d-flex-column">
+        <div class="d-flex-center d-flex-row d-flex-fill padding-horrizontal nav-footer-area-title" >
+          <span class="nav-footer-area-line"></span>
+          <span class="nav-footer-area-text">Station Based</span>
+          <span class="nav-footer-area-text-smallecreen">Station</span>
+          <span class="nav-footer-area-line"></span>
+        </div>
+
+        <div id="more-wrapper-nav-footer" class="padding-horrizontal d-flex-row nav-footer-items">
+          <a id="more-secretlink-nav-footer" href="../local-climate-charts" class="d-none"></a>
+          <div id="more-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+            <div class="nav-footer-icon">
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+            <div class="nav-footer-label">
+              More
+            </div>
+            <div class="nav-footer-label-smallscreen">
+              More
+            </div>
+            <div class="nav-footer-label-verysmallscreen">
+              More
+            </div>
+          </div>
+        </div>
+
+        <div id="expanded-wrapper-nav-footer" class="padding-horrizontal d-flex-row nav-footer-items">
+
+          <a id="historical-weather-data-secretlink-nav-footer" href="../historical-weather-data" class="d-none"></a>
+          <div id="historical-weather-data-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+            <div class="nav-footer-icon">
+              <i class="fas fa-chart-area"></i>
+            </div>
+            <div class="nav-footer-label">
+              Historical Weather Data
+            </div>
+            <div class="nav-footer-label-smallscreen">
+              Historical Data
+            </div>
+            <div class="nav-footer-label-verysmallscreen">
+              Data
+            </div>
+          </div>
+
+          <a id="historical-thresholds-secretlink-nav-footer" href="../historical-thresholds" class="d-none"></a>
+          <div id="historical-thresholds-nav-footer" class="d-flex d-flex-center d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+            <div class="nav-footer-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="nav-footer-label">
+              Historical Thresholds
+            </div>
+            <div class="nav-footer-label-smallscreen">
+              Historical Thresholds
+            </div>
+            <div class="nav-footer-label-verysmallscreen">
+              Thresholds
+            </div>
+          </div>
+
+          <a id="hightide-flooding-secretlink-nav-footer" href="../high-tide-flooding" class="d-none"></a>
+          <div id="hightide-flooding-nav-footer" class="d-flex d-flex-bottom padding-horrizontal d-flex-column nav-footer-item">
+            <div class="nav-footer-icon">
+              <i class="fas fa-water"></i>
+            </div>
+            <div class="nav-footer-label">
+              High-tide Flooding
+            </div>
+            <div class="nav-footer-label-smallscreen">
+              High-tide
+            </div>
+            <div class="nav-footer-label-verysmallscreen">
+              Tide
+            </div>
+          </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- less  -->
+      <div id="less-row-1" class="d-flex-row nav-footer-row-1">
+        <div class="padding-horrizontal d-flex-column">
+          <div class="d-flex-center d-flex-row padding-horrizontal nav-footer-area-title" >
+          </div>
+
+          <a id="less-secretlink-nav-footer" href="../cards-home" class="d-none"></a>
+          <div id="less-wrapper-nav-footer" class="padding-horrizontal d-flex-bottom d-flex-row nav-footer-item">
+            <div class="d-flex d-flex-bottom d-flex-column">
+              <div class="nav-footer-icon">
+                <i class="fas fa-ellipsis-h"></i>
+              </div>
+              <div class="nav-footer-label">
+                Less
+              </div>
+              <div class="nav-footer-label-smallscreen">
+                Less
+              </div>
+              <div class="nav-footer-label-verysmallscreen">
+                Less
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>
+
+<script type="text/javascript" src="/resources/js/nav_footer.js"></script>
+
+<!-- END NAV FOOOTER TEMPLATE -->
+<div id="desktop-warning">
+  <p>The Climate Explorer is optimized for desktop use. Please visit the site on a desktop computer.</p>
+</div>
+
+<!-- START candidates for minification -->
+<script type="text/javascript" src="/resources/vendor/lodash.js"></script>
+<script type="text/javascript" src="/resources/vendor/formstone/core.js"></script>
+<script type="text/javascript" src="/resources/vendor/formstone/mediaquery.js"></script>
+<script type="text/javascript" src="/resources/vendor/formstone/touch.js"></script>
+<script type="text/javascript" src="/resources/vendor/formstone/scrollbar.js"></script>
+<script type="text/javascript" src="/resources/vendor/formstone/dropdown.js"></script>
+<script type="text/javascript" src="/resources/vendor/formstone/equalize.js"></script>
+<script type="text/javascript" src="/resources/vendor/formstone/swap.js"></script>
+<script type="text/javascript" src="/resources/vendor/lc_switch.min.js"></script>
+<script type="text/javascript" src="/resources/vendor/jquery.cycle2.min.js"></script>
+<script type="text/javascript" src="/resources/vendor/jquery.waypoints.min.js"></script>
+<script type="text/javascript" src="/resources/vendor/jquery.waypoints.sticky.min.js"></script>
+<script type="text/javascript" src="/resources/vendor/split-pane.min.js"></script>
+<script type="text/javascript" src="/resources/vendor/download.js"></script>
+<script type="text/javascript" src="/resources/vendor/jquery.hoverintent.min.js"></script>
+<script type="text/javascript" src="/resources/vendor/sweetalert.min.js"></script>
+<script type="text/javascript" src="/resources/vendor/tether.js"></script>
+<script type="text/javascript" src="/resources/vendor/shepherd.min.js"></script>
+<script type="text/javascript" src="/resources/vendor/formmapper.js"></script>
+<!-- END candidates for minification -->
+
+<script type="text/javascript" src="/resources/vendor/climate-widget-graph/climate-widget-graph.js"></script>
+
+<script type="text/javascript" src="/resources/js/main.js"></script>
+
+<script type="text/javascript" src="/resources/js/global_functions.js"></script>
+<script type="text/javascript" src="/resources/vendor/tidal/tidalstationswidget.js"></script>
+
+
+<script>
+  $(document).ready(function () {
+    window.app = new App('/resources/data/');
+  });
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119744751-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', "UA-119744751-1");
+</script>
+
+
+<script src="https://unpkg.com/terraformer@1.0.8/terraformer.js" integrity="sha384-+M797Pj3WZVCwMmLbOxAoaWYcKJo8NSxItmI48ytcLNeAnfn1d/IckFn31jEqrzP"
+        crossorigin="anonymous"></script>
+<script src="https://unpkg.com/terraformer-arcgis-parser@1.0.5/terraformer-arcgis-parser.js"
+        integrity="sha384-duFUjKTSNoxEspdJNwr83CUgRxclf0ueKJB9DU/Vbit6bfWgzvZsHW6H1JLBBXhp" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/resources/js/cards-home.js"></script>
+<script type="text/javascript" src="/resources/js/ce3-ui-components.js"></script>
+</body>
+</html>
